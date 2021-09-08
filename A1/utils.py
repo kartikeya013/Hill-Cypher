@@ -9,8 +9,21 @@ def getTextFromFile(file):
     text_file.close()
     return (data)
 
-def geteKeyFromFile(file):
-    return np.loadtxt(file, dtype='i', delimiter=',')
+def getKeyFromFile(file):
+    with open(file) as f:
+        n = [int(x) for x in next(f).split()] 
+        lines = []
+        for line in f:
+            lines.append([int(x) for x in line.split()])
+    return np.array(lines)
+
+def write_key_to_file(key, file):
+    n = key.shape[0]
+    with open(file, 'w') as testfile:
+        testfile.write(str(n) + '\n')
+        for row in key:
+            testfile.write(' '.join([str(a) for a in row]) + '\n')
+    
 
 def writeFile(file,s):
     with open(file, "w") as f:
@@ -45,10 +58,19 @@ def decryption(encryptedText,key,n):
     decryptedText = "".join(decryptedText)
     return (decryptedText)
 
+def encryption(plainText,key,n):
+    segments = [plainText[n*i:n*(i+1)] for i in range(int(len(plainText)/n))]
+    segments = np.array([np.array([ord(x[i])-ord('A') for i in range(len(x))]).T for x in segments]).T
+    encrypted = np.matmul(key,segments)%26
+    encrypted = encrypted.ravel(order='F')
+    encryptedText = list(map(chr,encrypted+ord('A')))
+    encryptedText = "".join(encryptedText)
+    return encryptedText
+
 
 def get_text(plain_text, encrypted_text, n):
     start = 0
-    while(start<=len(encrypted_text)-n*n):
+    while(start<=len(plain_text)-n*n):
         plainText = plain_text[start:start + n*n]
         encryptedText = encrypted_text[start:start + n*n]
         P = [plainText[n*i:n*(i+1)] for i in range(n)]
@@ -69,6 +91,5 @@ def get_key(plainText,encryptedText,n,alphabet_size=26):
     P = Matrix(P)
     P_inv = P.inv_mod(alphabet_size) 
     key = np.matmul(C,P_inv)%alphabet_size
-    # key = key.ravel(order='F')
     return key
 
