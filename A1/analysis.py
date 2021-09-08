@@ -1,3 +1,5 @@
+from numpy import dtype, float32
+import numpy as np
 import utils
 
 plainText = "SHORTEXAMPLE"
@@ -5,14 +7,12 @@ encryptedText = "APADJTFTWLFJ"
 
 assert len(plainText)==len(encryptedText)
 
-# for n in range(1,11):
-#     known_plainText = plainText[:n*n]
-#     known_encryptedText = encryptedText[:n*n]
-#     currentKey = utils.getKey(known_plainText,known_encryptedText,n)
-#     print(known_encryptedText)
+all_ics = np.zeros(shape=(11,), dtype=np.float32)
 
-key = utils.get_key(plainText,encryptedText,2)
-print(key)
+for n in range(2,11):
+    key = utils.get_key(plainText,encryptedText,n)
+    all_ics[n] = utils.index_of_coincidence()
+    print(key)
 
 
 # test = "VVQGYTVVVKALURWFHQACMMVLEHUCATWFHHIPLXHVUWSCIGINCMUHNHQRMSUIMHWZODXTNAEKVVQGYTVVQPHXINWCABASYYMTKSZRCXWRPRFWYHXYGFIPSBWKQAMZYBXJQQABJEMTCHQSNAEKVVQGYTVVPCAQPBSLURQUCVMVPQUTMMLVHWDHNFIKJCPXMYEIOCDTXBJWKQGAN"
