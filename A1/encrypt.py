@@ -1,16 +1,13 @@
 import numpy as np
 import re
+import utils
 
 message = "AB CD EEE GH"
 key = ([[1,2],[2,3]])
 n = np.shape(key)[0]
 print("Key Size:",n)
-def processMessage(m, n):
-    s = re.sub('[^A-Z]+','',m)
-    while(len(s)%n != 0): s += 'X'
-    return s
 
-plainText = processMessage(message, n)
+plainText = utils.processMessage(message, n)
 print('Plain Text:',plainText)
 
 segments = [plainText[n*i:n*(i+1)] for i in range(int(len(plainText)/n))]
