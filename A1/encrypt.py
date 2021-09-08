@@ -2,12 +2,13 @@ import numpy as np
 import re
 import utils
 
-message = "AB CD EEE GH"
-key = ([[1,2],[2,3]])
+# message = "AB CD EEE GH"
+message = "SHORT EXAMPLE"
+key = ([[7,8],[11,11]])
 n = np.shape(key)[0]
 print("Key Size:",n)
-
-plainText = utils.processMessage(message, n)
+assert utils.check_invertible(key)
+plainText = utils.process_message(message, n)
 print('Plain Text:',plainText)
 
 segments = [plainText[n*i:n*(i+1)] for i in range(int(len(plainText)/n))]
