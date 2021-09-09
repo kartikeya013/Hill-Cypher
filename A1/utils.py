@@ -48,6 +48,9 @@ def check_invertible(key, alphabet_size=26):
     return (gcd==1)
 
 def decryption(encryptedText,key,n):
+    if not check_invertible(key):
+        print("Provided key is not invertible!")
+        return ""
     segments = [encryptedText[n*i:n*(i+1)] for i in range(int(len(encryptedText)/n))]
     segments = np.array([np.array([ord(x[i])-ord('A') for i in range(len(x))]).T for x in segments]).T
     A = Matrix(key)
@@ -79,6 +82,8 @@ def get_text(plain_text, encrypted_text, n):
             C = [encryptedText[n*i:n*(i+1)] for i in range(n)]
             C = np.array([np.array([ord(x[i])-ord('A') for i in range(len(x))]).T for x in C]).T
             return C,P
+        else:
+            print(f"Window of plaintext {start}:{start+n*n} is not invertible, taking next window")
         start += n
 
     return None,None

@@ -14,9 +14,9 @@ def decrypt(encryptedTextFile, keyFile):
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Description of your program')
-    parser.add_argument('-e','--encrpyted', type=str, help='Encrypted filename', required=True)
+    parser.add_argument('-e','--encrypted', type=str, help='Encrypted filename', required=True)
     parser.add_argument('-k','--key', type=str, help='Key filename', required=True)
     parser.add_argument('-o','--output', type=str,default='output_decrypted_text.txt', help='Decrypted file name', required=False)
     args = vars(parser.parse_args())
-    encryptedText = decrypt(args['encrpyted'],args['key'])
+    encryptedText = decrypt(args['encrypted'],args['key'])
     utils.writeFile(args['output'], encryptedText)
